@@ -3,15 +3,17 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from schemas import WaiterBase, WaiterOut, BillIn, DishIn, BillBase, DishBase
 from db import crud
 from db.database import get_db
+from schemas import BillBase, BillIn, DishBase, DishIn, WaiterBase, WaiterOut
 
 router = APIRouter(prefix="/waiters", tags=["waiters"])
 
 
 @router.get("/", response_model=list[WaiterBase])
-async def get_all_waiters(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+async def get_all_waiters(
+    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
+):
     """Get all waiters."""
     items = crud.get_all_waiters(db, skip=skip, limit=limit)
     if len(items) == 0:

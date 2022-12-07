@@ -4,7 +4,7 @@ from fastapi import FastAPI
 
 from db import models
 from db.database import engine
-from routers import waiters, dishes, bills
+from routers import bills, dishes, waiters
 
 app = FastAPI()
 app.include_router(waiters.router)

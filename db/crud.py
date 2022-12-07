@@ -3,8 +3,8 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from schemas import WaiterBase, WaiterOut, BillIn, DishIn, BillBase, DishBase
 from db.models import Bill, Dish, Waiter
+from schemas import BillBase, BillIn, DishBase, DishIn, WaiterBase, WaiterOut
 
 
 def get_waiter(db: Session, waiter_id: int):
@@ -36,7 +36,8 @@ def create_bill(db: Session, bill: BillIn):
             cost_list.append(dish.cost)
         except Exception:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail=f"Dish id {dish_id} not found"
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Dish id {dish_id} not found",
             )
     bill.dishes = dishes_list
     print(bill.dishes)
@@ -61,3 +62,9 @@ def get_dish(db: Session, dish_id: int):
     """Get a dish by id."""
     db_dish = db.query(Dish).filter(Dish.id == dish_id).first()
     return db_dish
+
+
+def get_all_dishes(db: Session, skip: int = 0, limit: int = 100):
+    """Get all dishes."""
+    db_dishes = db.query(Dish).offset(skip).limit(limit).all()
+    return db_dishes

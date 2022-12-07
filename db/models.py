@@ -50,7 +50,9 @@ class Bill(Base):
     tip_included = Column("tip_included", Boolean, default=False)
     time = Column("time", DateTime(), server_default=text("NOW()"))
 
-    dishes = relationship("Dish", secondary=bills_dishes_association, back_populates="ordered")
+    dishes = relationship(
+        "Dish", secondary=bills_dishes_association, back_populates="ordered"
+    )
 
     def __repr__(self):
         return f"Bill(id={self.id}, table_number={self.table_number}, amount={self.amount})"
@@ -67,7 +69,9 @@ class Dish(Base):
     image_url = Column("image_url", String(500))
     cost = Column("cost", Float)
 
-    ordered = relationship("Bill", secondary=bills_dishes_association, back_populates="dishes")
+    ordered = relationship(
+        "Bill", secondary=bills_dishes_association, back_populates="dishes"
+    )
 
     def __repr__(self):
         return f"Dish(id={self.id}, name={self.name})"
