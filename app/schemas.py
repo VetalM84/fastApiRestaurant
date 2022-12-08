@@ -1,4 +1,5 @@
 """Schemas for request body data validation. Works both for input and output."""
+
 import datetime
 from typing import List
 

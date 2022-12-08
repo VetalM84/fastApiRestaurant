@@ -1,7 +1,7 @@
 """Test client config file."""
 
 import pytest
-from main import app
+from app.main import app
 from starlette.testclient import TestClient
 
 

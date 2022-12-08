@@ -1,11 +1,11 @@
-"""GET endpoints for users."""
+"""GET endpoints for waiter."""
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from schemas import BillBase, BillIn, DishBase, DishIn, WaiterBase, WaiterOut
 from sqlalchemy.orm import Session
 
-from db import crud
-from db.database import get_db
+from app.crud import crud_waiter
+from app.db.database import get_db
+from app.schemas import WaiterBase, WaiterOut
 
 router = APIRouter(prefix="/waiters", tags=["waiters"])
 
@@ -15,7 +15,7 @@ async def get_all_waiters(
     skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
     """Get all waiters."""
-    items = crud.get_all_waiters(db, skip=skip, limit=limit)
+    items = crud_waiter.get_all_waiters(db, skip=skip, limit=limit)
     if len(items) == 0:
         raise HTTPException(status_code=404, detail="Waiters not found")
     return items
@@ -24,7 +24,7 @@ async def get_all_waiters(
 @router.get("/{waiter_id}", response_model=WaiterOut, status_code=status.HTTP_200_OK)
 async def get_waiter(waiter_id: int, db: Session = Depends(get_db)):
     """Get a waiter by id with a list of the bills."""
-    db_waiter = crud.get_waiter(db, waiter_id=waiter_id)
+    db_waiter = crud_waiter.get_waiter(db, waiter_id=waiter_id)
     if not db_waiter:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Waiter not found"

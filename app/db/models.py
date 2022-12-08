@@ -3,7 +3,7 @@
 from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, String, Table, text
 from sqlalchemy.orm import relationship
 
-from db.database import Base
+from app.db.database import Base
 
 bills_dishes_association = Table(
     "bills_dishes",
