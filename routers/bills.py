@@ -1,11 +1,11 @@
 """GET endpoints for users."""
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from schemas import BillBase, BillIn, DishBase, DishIn, WaiterBase, WaiterOut
 from sqlalchemy.orm import Session
 
 from db import crud
 from db.database import get_db
-from schemas import BillBase, BillIn, DishBase, DishIn, WaiterBase, WaiterOut
 
 router = APIRouter(prefix="/bills", tags=["bills"])
 

@@ -1,10 +1,10 @@
 """Functions to create, read, update, and delete data from the database."""
 
 from fastapi import HTTPException, status
+from schemas import BillBase, BillIn, DishBase, DishIn, WaiterBase, WaiterOut
 from sqlalchemy.orm import Session
 
 from db.models import Bill, Dish, Waiter
-from schemas import BillBase, BillIn, DishBase, DishIn, WaiterBase, WaiterOut
 
 
 def get_waiter(db: Session, waiter_id: int):

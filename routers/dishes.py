@@ -1,9 +1,9 @@
 """GET endpoints for articles."""
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from schemas import BillBase, BillIn, DishBase, DishIn, WaiterBase, WaiterOut
 from sqlalchemy.orm import Session
 
-from schemas import BillBase, BillIn, DishBase, DishIn, WaiterBase, WaiterOut
 from db import crud
 from db.database import get_db
 
@@ -16,6 +16,7 @@ async def get_dish(dish_id: int, db: Session = Depends(get_db)):
     db_dish = crud.get_bill(db, bill_id=dish_id)
     if not db_dish:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Dish with id {dish_id} not found"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Dish with id {dish_id} not found",
         )
     return db_dish
