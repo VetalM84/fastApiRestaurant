@@ -6,7 +6,7 @@ from app.db import models
 from app.db.database import engine
 from app.routers import bills, dishes, root, waiters
 
-app = FastAPI()
+app = FastAPI(title="Restaurant API")
 
 app.include_router(waiters.router)
 app.include_router(dishes.router)

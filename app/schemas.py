@@ -26,6 +26,7 @@ class DishOutBill(DishBase):
 
     description: str = Field(exclude=True)
     image_url: HttpUrl = Field(exclude=True)
+    count: int | None = None
 
 
 class DishIn(DishBase):

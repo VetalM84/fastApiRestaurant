@@ -17,20 +17,26 @@ def tip(amount, bill):
 
 def create_bill(db: Session, bill: BillIn):
     """Create a new bill."""
-    dishes_list, cost_list = [], []
+    dishes_objects_list, dishes_cost_list = [], []
     for dish_id in bill.dishes:
         try:
             dish = get_dish(db, dish_id=dish_id)
-            dishes_list.append(dish)
-            cost_list.append(dish.cost)
+            # retrieve a dish object from given id and append it to list
+            dishes_objects_list.append(dish)
+            # assign new attr to dish object equal to ordered dishes count
+            dish.count = bill.dishes.count(dish_id)
+            # retrieve a dish cost from given id and append it to list
+            dishes_cost_list.append(dish.cost)
         except Exception:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Dish id {dish_id} not found",
             )
-    bill.dishes = dishes_list
-    print(bill.dishes)
-    amount = round(sum(cost_list), 2)
+    # update list of id's with a list of appropriate objects
+    bill.dishes = dishes_objects_list
+
+    amount = round(sum(dishes_cost_list), 2)
+    # add tip to total amount of bill
     bill.amount = amount + tip(amount=amount, bill=bill)
 
     new_bill = Bill(**bill.dict())
