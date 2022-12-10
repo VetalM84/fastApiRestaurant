@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.crud import crud_waiter
 from app.db.database import get_db
-from app.schemas import WaiterBase, WaiterOut
+from app.schemas import WaiterBase, WaiterOut, WaiterIn
 
 router = APIRouter(prefix="/waiters", tags=["waiters"])
 
@@ -30,3 +30,10 @@ async def get_waiter(waiter_id: int, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND, detail="Waiter not found"
         )
     return db_waiter
+
+
+@router.post("/", response_model=WaiterOut, status_code=status.HTTP_201_CREATED)
+async def create_waiter(waiter: WaiterIn, db: Session = Depends(get_db)):
+    """Get a waiter by id with a list of the bills."""
+    new_waiter = crud_waiter.create_waiter(db, waiter=waiter)
+    return new_waiter

@@ -71,7 +71,7 @@ class WaiterBase(BaseModel):
 
     id: int
     username: str = Field(..., max_length=50)
-    password: int
+    password: str
     bills: List[BillBase] = []
 
     class Config:
@@ -85,3 +85,15 @@ class WaiterOut(WaiterBase):
 
     password: int = Field(exclude=True)
     bills: list[WaiterBillOut] = []
+
+
+class WaiterIn(BaseModel):
+    """Base serializer for a new waiter."""
+
+    username: str = Field(..., max_length=50)
+    password: str
+
+    class Config:
+        """Enable ORM mode for all child methods."""
+
+        orm_mode = True
