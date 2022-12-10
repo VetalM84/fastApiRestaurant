@@ -53,6 +53,12 @@ class BillBase(BaseModel):
         orm_mode = True
 
 
+class WaiterBillOut(BillBase):
+    """Schema for bills without dishes in waiter response."""
+
+    dishes: list[DishOutBill] = Field(exclude=True)
+
+
 class BillIn(BillBase):
     """Serializer for creating a bill."""
 
@@ -78,3 +84,4 @@ class WaiterOut(WaiterBase):
     """Serializer for a waiter with hidden password."""
 
     password: int = Field(exclude=True)
+    bills: list[WaiterBillOut] = []
