@@ -20,3 +20,20 @@ async def get_dish(dish_id: int, db: Session = Depends(get_db)):
             detail=f"Dish with id {dish_id} not found",
         )
     return db_dish
+
+
+@router.post("/", response_model=DishBase, status_code=status.HTTP_201_CREATED)
+async def create_dish(dish: DishIn, db: Session = Depends(get_db)):
+    """Create a new dish."""
+    return crud_dish.create_dish(db=db, dish=dish)
+
+
+@router.get("/", response_model=list[DishBase])
+async def get_all_dishes(
+    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
+):
+    """Get all dishes."""
+    dishes = crud_dish.get_all_dishes(db, skip=skip, limit=limit)
+    if len(dishes) == 0:
+        raise HTTPException(status_code=404, detail="Dishes not found")
+    return dishes
