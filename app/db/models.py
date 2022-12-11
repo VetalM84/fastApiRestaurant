@@ -1,17 +1,8 @@
 """Models for SQLAlchemy."""
 
-from sqlalchemy import (
-    Boolean,
-    Column,
-    DateTime,
-    Float,
-    ForeignKey,
-    Integer,
-    String,
-    Table,
-    text,
-)
+from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 from app.db.database import Base
 
@@ -44,11 +35,11 @@ class Bill(Base):
 
     id = Column("id", Integer, primary_key=True)
     waiter_id = Column(Integer, ForeignKey("waiters.id"))
-    table_number = Column("table", Integer)
+    table_number = Column("table_number", Integer)
     amount = Column("amount", Float)
-    tip_percent = Column("tip", Integer)
+    tip_percent = Column("tip_percent", Integer)
     tip_included = Column("tip_included", Boolean, default=False)
-    time = Column("time", DateTime(), server_default=text("NOW()"))
+    time = Column("time", DateTime(timezone=True), server_default=func.now())
 
     dishes = relationship(
         "Dish", secondary=bills_dishes_association, back_populates="ordered"
