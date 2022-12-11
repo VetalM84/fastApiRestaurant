@@ -1,7 +1,8 @@
 fastapi~=0.88.0
-SQLAlchemy~=1.4.44
+SQLAlchemy~=1.4.45
 pydantic~=1.10.2
 psycopg2~=2.9.5
 pytest~=7.2.0
-starlette==0.23.0
+starlette~=0.23.1
 python-dotenv~=0.21.0
+alembic~=1.8.1
