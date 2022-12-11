@@ -1,5 +1,4 @@
 """Tests for dishes.py"""
-import json
 
 
 def test_get_dish(test_app):
@@ -22,5 +21,5 @@ def test_create_dish(test_app):
       "image_url": "https://video.szekwanyuen1.net/HouseholdKitchenAppliances",
       "cost": 750.09
     }
-    response = test_app.post("/dishes", data=json.dumps(data))
+    response = test_app.post("/dishes", json=data)
     assert response.status_code == 201
