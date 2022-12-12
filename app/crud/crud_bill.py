@@ -51,3 +51,11 @@ def get_bill(db: Session, bill_id: int):
     """Get a bill by id."""
     db_bill = db.query(Bill).filter(Bill.id == bill_id).first()
     return db_bill
+
+
+def delete_bill(db: Session, bill_id: int):
+    """Delete a bill by id."""
+    db_bill = db.query(Bill).filter(Bill.id == bill_id).first()
+    db.delete(db_bill)
+    db.commit()
+    return db_bill

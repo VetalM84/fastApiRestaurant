@@ -30,3 +30,14 @@ async def get_bill(bill_id: int, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Bill id {bill_id} not found"
         )
     return db_bill
+
+
+@router.delete("/{bill_id}", status_code=status.HTTP_200_OK)
+async def delete_bill(bill_id: int, db: Session = Depends(get_db)):
+    """Delete a bill by id."""
+    db_bill = crud_bill.delete_bill(db, bill_id=bill_id)
+    if not db_bill:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Bill id {bill_id} not found"
+        )
+    return {"message": "Deleted"}

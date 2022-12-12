@@ -9,8 +9,8 @@ from app.db.database import Base
 bills_dishes_association = Table(
     "bills_dishes",
     Base.metadata,
-    Column("bill_id", Integer, ForeignKey("bills.id")),
-    Column("dish_id", Integer, ForeignKey("dishes.id")),
+    Column("bill_id", Integer, ForeignKey("bills.id", ondelete="CASCADE")),
+    Column("dish_id", Integer, ForeignKey("dishes.id", ondelete="CASCADE")),
 )
 
 
@@ -19,9 +19,9 @@ class Waiter(Base):
 
     __tablename__ = "waiters"
 
-    id = Column(Integer, primary_key=True)
-    username = Column("username", String(50))
-    password = Column("password", String(6))
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String(50), nullable=False)
+    password = Column(String(6), nullable=False)
     bills = relationship("Bill")
 
     def __repr__(self):
@@ -33,16 +33,16 @@ class Bill(Base):
 
     __tablename__ = "bills"
 
-    id = Column("id", Integer, primary_key=True)
-    waiter_id = Column(Integer, ForeignKey("waiters.id"))
-    table_number = Column("table_number", Integer)
-    amount = Column("amount", Float)
-    tip_percent = Column("tip_percent", Integer)
-    tip_included = Column("tip_included", Boolean, default=False)
-    time = Column("time", DateTime(timezone=True), server_default=func.now())
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    waiter_id = Column(Integer, ForeignKey("waiters.id"), nullable=False)
+    table_number = Column(Integer, nullable=False)
+    amount = Column(Float, nullable=False)
+    tip_percent = Column(Integer)
+    tip_included = Column(Boolean, default=False, nullable=False)
+    time = Column(DateTime(timezone=True), server_default=func.now())
 
     dishes = relationship(
-        "Dish", secondary=bills_dishes_association, back_populates="ordered"
+        "Dish", secondary=bills_dishes_association, back_populates="ordered", passive_deletes=True
     )
 
     def __repr__(self):
@@ -54,14 +54,18 @@ class Dish(Base):
 
     __tablename__ = "dishes"
 
-    id = Column("id", Integer, primary_key=True)
-    name = Column("name", String(100))
-    description = Column("description", String(1024))
-    image_url = Column("image_url", String(500))
-    cost = Column("cost", Float)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    description = Column(String(1024), nullable=False)
+    image_url = Column(String(500), nullable=False)
+    cost = Column(Float)
 
     ordered = relationship(
-        "Bill", secondary=bills_dishes_association, back_populates="dishes"
+        "Bill",
+        secondary=bills_dishes_association,
+        back_populates="dishes",
+        cascade="all, delete",
+        passive_deletes=True,
     )
 
     def __repr__(self):
