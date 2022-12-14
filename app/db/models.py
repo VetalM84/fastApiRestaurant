@@ -21,7 +21,7 @@ class Waiter(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(50), nullable=False)
-    password = Column(String(6), nullable=False)
+    password = Column(String(1024), nullable=False)
     bills = relationship("Bill")
 
     def __repr__(self):
