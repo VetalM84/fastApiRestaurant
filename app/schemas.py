@@ -83,7 +83,7 @@ class WaiterBase(BaseModel):
 class WaiterOut(WaiterBase):
     """Serializer for a waiter with hidden password."""
 
-    password: int = Field(exclude=True)
+    password: str = Field(exclude=True)
     bills: list[WaiterBillOut] = []
 
 
