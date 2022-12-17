@@ -3,16 +3,10 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
+from app.crud import utils
 from app.crud.crud_dish import get_dish
 from app.db.models import Bill
 from app.schemas import BillIn
-
-
-def tip(amount, bill):
-    """Calculate tips."""
-    if bill.tip_included:
-        return round(amount * bill.tip_percent / 100, 2)
-    return 0.00
 
 
 def create_bill(db: Session, bill: BillIn):
@@ -37,7 +31,7 @@ def create_bill(db: Session, bill: BillIn):
 
     amount = round(sum(dishes_cost_list), 2)
     # add tip to total amount of bill
-    bill.amount = amount + tip(amount=amount, bill=bill)
+    bill.amount = amount + utils.tip(amount=amount, bill=bill)
 
     new_bill = Bill(**bill.dict())
 
