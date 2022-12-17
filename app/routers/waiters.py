@@ -1,11 +1,11 @@
-"""GET endpoints for waiter."""
+"""Endpoints for waiter."""
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.crud import crud_waiter
 from app.db.database import get_db
-from app.schemas import WaiterBase, WaiterOut, WaiterIn
+from app.schemas import WaiterBase, WaiterIn, WaiterOut
 
 router = APIRouter(prefix="/waiters", tags=["waiters"])
 
@@ -34,6 +34,6 @@ async def get_waiter(waiter_id: int, db: Session = Depends(get_db)):
 
 @router.post("/", response_model=WaiterOut, status_code=status.HTTP_201_CREATED)
 async def create_waiter(waiter: WaiterIn, db: Session = Depends(get_db)):
-    """Get a waiter by id with a list of the bills."""
+    """Create a waiter."""
     new_waiter = crud_waiter.create_waiter(db, waiter=waiter)
     return new_waiter

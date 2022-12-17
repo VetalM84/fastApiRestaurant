@@ -97,3 +97,14 @@ class WaiterIn(BaseModel):
         """Enable ORM mode for all child methods."""
 
         orm_mode = True
+
+
+class Token(BaseModel):
+    """Access token out."""
+
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str | None = None
