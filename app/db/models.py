@@ -20,7 +20,7 @@ class Waiter(Base):
     __tablename__ = "waiters"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String(50), nullable=False)
+    username = Column(String(50), nullable=False, unique=True)
     password = Column(String(1024), nullable=False)
     bills = relationship("Bill")
 
