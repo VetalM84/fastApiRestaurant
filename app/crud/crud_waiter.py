@@ -2,6 +2,7 @@
 
 from sqlalchemy.orm import Session
 
+from app.crud import utils
 from app.db.models import Waiter
 from app.schemas import WaiterIn
 
@@ -20,8 +21,8 @@ def get_all_waiters(db: Session, skip: int = 0, limit: int = 100):
 
 def create_waiter(db: Session, waiter: WaiterIn):
     """Create a new waiter."""
-    db_waiter = Waiter(**waiter.dict())
-    # TODO encode a password
-    db.add(db_waiter)
+    waiter.password = utils.get_password_hash(waiter.password)
+    new_waiter = Waiter(**waiter.dict())
+    db.add(new_waiter)
     db.commit()
-    return db_waiter
+    return new_waiter
