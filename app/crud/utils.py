@@ -1,6 +1,7 @@
 """Miscellaneous methods for CRUD."""
 
 from datetime import datetime, timedelta
+from typing import Optional
 
 from jose import jwt
 from passlib.context import CryptContext
@@ -32,13 +33,15 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
-def get_user_by_username(db, username: str):
+def get_user_by_username(db, username: str) -> Waiter:
     """Get user object based on given username."""
     user = db.query(Waiter).filter(Waiter.username == username).first()
     return user
 
 
-def authenticate_user(username: str, password: str, db: Session):
+def authenticate_user(
+    username: str, password: str, db: Session
+) -> Optional[Waiter | bool]:
     """Check password and return Waiter object."""
     waiter = get_user_by_username(db, username)
     if not waiter or not verify_password(password, waiter.password):
