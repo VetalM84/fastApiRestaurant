@@ -1,7 +1,8 @@
 """Test cases for methods from utils.py."""
 
 import pytest
-from app.crud.utils import tip, verify_password, get_password_hash
+
+from app.crud.utils import get_password_hash, tip, verify_password
 
 
 def test_tip(mocker):
