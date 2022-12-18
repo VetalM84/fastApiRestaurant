@@ -14,7 +14,7 @@ def test_get_current_user(session, mocker):
     result = asyncio.run(
         get_current_user(
             db=session,
-            token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdHJpbmciLCJleHAiOjE2NzEzNTU0MTF9.NbAAkmEerO_Wm8lNQeLfd_XVIGn-k8-gekVrcgpHUfA",
+            token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdHJpbmciLCJpYXQiOjE1MTYyMzkwMjJ9.gKlStbKJNJyTrI-halDo1aRbgMbFaUVoLfb0-HM_bUo",
         )
     )
     assert result == "string"
