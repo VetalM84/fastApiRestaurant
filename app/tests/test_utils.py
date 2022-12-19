@@ -11,15 +11,12 @@ from app.crud.utils import (
 from app.db.models import Waiter
 
 
-def test_tip(mocker):
+@pytest.mark.parametrize("tip_included,expected_output", [(False, 0.0), (True, 5.0)])
+def test_tip(mocker, tip_included, expected_output):
     """Test tip amount."""
-    mock_bill = mocker.Mock(tip_percent=5, tip_included=False)
+    mock_bill = mocker.Mock(tip_percent=5, tip_included=tip_included)
     result = tip(amount=100, bill=mock_bill)
-    assert result == 0.0
-
-    mock_bill = mocker.Mock(tip_percent=5, tip_included=True)
-    result = tip(amount=100, bill=mock_bill)
-    assert result == 5.0
+    assert result == expected_output
 
 
 def test_verify_password(mocker):
