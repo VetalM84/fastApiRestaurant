@@ -1,9 +1,11 @@
 """Test cases for methods from utils.py."""
+from datetime import timedelta
 
 import pytest
 
 from app.crud.utils import (
     authenticate_user,
+    create_access_token,
     get_password_hash,
     tip,
     verify_password,
@@ -64,3 +66,14 @@ def test_authenticate_user(session, mocker):
     )
     result = authenticate_user(username="string", password="1111", db=session)
     assert not result
+
+
+@pytest.mark.parametrize(
+    "expires_delta,expected_output",
+    [(timedelta(minutes=30), "encoded"), (None, "encoded")],
+)
+def test_create_access_token(mocker, expires_delta, expected_output):
+    """Test create access token."""
+    mocker.patch("jose.jwt.encode", return_value="encoded")
+    result = create_access_token(data={"sub": "string"}, expires_delta=expires_delta)
+    assert result == expected_output
