@@ -2,7 +2,13 @@
 
 import pytest
 
-from app.crud.utils import get_password_hash, tip, verify_password
+from app.crud.utils import (
+    authenticate_user,
+    get_password_hash,
+    tip,
+    verify_password,
+)
+from app.db.models import Waiter
 
 
 def test_tip(mocker):
@@ -34,3 +40,30 @@ def test_get_password_hash(mocker):
     )
     result = get_password_hash(password="1111")
     assert result == "$2b$12$OvWlVVOnafTbNMwiOkDqSOQHkfCy5vj2xgQdZOz6QHZx6ul6VSVtW"
+
+
+def test_authenticate_user(session, mocker):
+    """Test authenticate user."""
+    waiter = Waiter(
+        id=10,
+        username="string",
+        password="$12$BQhTQ6/OLAmkG/LU6G2J2.ngFk6EI9hBjFNjeTnpj2eVfQ3DCAtT.",
+    )
+    mocker.patch(
+        "app.crud.utils.get_user_by_username",
+        return_value=waiter,
+    )
+    mocker.patch(
+        "app.crud.utils.verify_password",
+        return_value=True,
+    )
+    result = authenticate_user(username="string", password="1111", db=session)
+    assert result == waiter
+
+    # verify_password fails
+    mocker.patch(
+        "app.crud.utils.verify_password",
+        return_value=False,
+    )
+    result = authenticate_user(username="string", password="1111", db=session)
+    assert not result
