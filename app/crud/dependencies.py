@@ -10,7 +10,7 @@ from app.crud import utils
 from app.db.database import get_db
 from app.db.models import Waiter
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 
 async def get_current_user(
