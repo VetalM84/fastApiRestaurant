@@ -5,7 +5,7 @@ import asyncio
 import pytest
 from fastapi import HTTPException
 
-from app.crud.dependencies import get_current_user
+from app.crud.dependencies import JWTBearer, get_current_user
 
 
 def test_get_current_user(session, mocker):
@@ -38,3 +38,21 @@ def test_get_current_user_fails(session):
                 token="JleHAiOjE2NzEzNTU0MTF9.NbAAkmEerO_Wm8lNQeLfd_XVIGn-k8-gekVrcgpHUfA",
             )
         )
+
+
+def test_jwt_bearer():
+    """Test verify_token method in JWTBearer class."""
+    jwt_bearer = JWTBearer()
+    # valid token
+    result = jwt_bearer.verify_token(
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdHJpbmciLCJpYXQiOjE1MTYyMzkwMjJ9.gKlStbKJNJyTrI-halDo1aRbgMbFaUVoLfb0-HM_bUo"
+    )
+    assert result
+    # wrong token
+    result = jwt_bearer.verify_token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ")
+    assert not result
+    # expired token
+    result = jwt_bearer.verify_token(
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdHJpbmciLCJleHAiOjE2NzE1MzUxNDN9.iSMmHiQhBDrZtkhR07cSuTlLTT5cYFX5jXwgrLfqYIU"
+    )
+    assert not result
