@@ -1,7 +1,11 @@
-"""Dependencies for authentication."""
+"""Dependencies for auth."""
 
 from fastapi import Depends, HTTPException, Request
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer, OAuth2PasswordBearer
+from fastapi.security import (
+    HTTPAuthorizationCredentials,
+    HTTPBearer,
+    OAuth2PasswordBearer,
+)
 from jose import JWTError, jwt
 from sqlalchemy.orm.session import Session
 from starlette import status
