@@ -49,3 +49,9 @@ async def create_waiter(waiter: WaiterIn, db: Session = Depends(get_db)):
     """Create a waiter."""
     new_waiter = crud_waiter.create_waiter(db, waiter=waiter)
     return new_waiter
+
+
+@router.get("/me", response_model=WaiterBase)
+async def get_logged_in_waiter(current_user: Waiter = Depends(get_current_user)):
+    """Get current logged in user."""
+    return current_user
