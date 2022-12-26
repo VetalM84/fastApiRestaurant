@@ -41,7 +41,7 @@ def test_get_password_hash(mocker):
     assert result == "$2b$12$OvWlVVOnafTbNMwiOkDqSOQHkfCy5vj2xgQdZOz6QHZx6ul6VSVtW"
 
 
-def test_authenticate_user(session, mocker):
+def test_authenticate_user(db_session, mocker):
     """Test authenticate user."""
     waiter = Waiter(
         id=10,
@@ -56,7 +56,7 @@ def test_authenticate_user(session, mocker):
         "app.crud.utils.verify_password",
         return_value=True,
     )
-    result = authenticate_user(username="string", password="1111", db=session)
+    result = authenticate_user(username="string", password="1111", db=db_session)
     assert result == waiter
 
     # verify_password fails
@@ -64,7 +64,7 @@ def test_authenticate_user(session, mocker):
         "app.crud.utils.verify_password",
         return_value=False,
     )
-    result = authenticate_user(username="string", password="1111", db=session)
+    result = authenticate_user(username="string", password="1111", db=db_session)
     assert not result
 
 
