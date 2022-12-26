@@ -43,7 +43,7 @@ def db_session():
 
 
 @pytest.fixture(scope="module")
-def test_app():
+def test_client():
     """Test client initiation for all tests."""
     client = TestClient(app)
     yield client

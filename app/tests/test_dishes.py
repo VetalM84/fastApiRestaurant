@@ -1,7 +1,7 @@
 """Tests for dishes.py"""
 
 
-def test_create_dish(test_app):
+def test_create_dish(test_client):
     """Create a dish."""
     data = {
         "id": 1,
@@ -10,22 +10,22 @@ def test_create_dish(test_app):
         "image_url": "https://video.szekwanyuen1.net/HouseholdKitchenAppliances",
         "cost": 750.09,
     }
-    response = test_app.post("/dishes", json=data)
+    response = test_client.post("/dishes", json=data)
     assert response.status_code == 201
     assert response.json()["id"] == 1
     assert response.json()["name"] == "ciwi core"
 
 
-def test_get_dish(test_app):
+def test_get_dish(test_client):
     """Test get a dish by id, 404"""
-    response = test_app.get("/dishes/1")
+    response = test_client.get("/dishes/1")
     assert response.status_code == 200
 
-    response = test_app.get("/dishes/100")
+    response = test_client.get("/dishes/100")
     assert response.status_code == 404
 
 
-def test_get_all_dishes(test_app):
+def test_get_all_dishes(test_client):
     """Test get all dishes."""
-    response = test_app.get("/dishes")
+    response = test_client.get("/dishes")
     assert response.status_code == 200
