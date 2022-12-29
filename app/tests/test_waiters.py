@@ -28,6 +28,7 @@ class TestWaiter:
 
     def test_get_waiter_401(self, test_client):
         """Test Get a waiter by id with no credentials."""
+        test_client.headers.clear()
         response = test_client.get("/waiters/1")
         assert response.status_code == 401
 
