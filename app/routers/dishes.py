@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.crud import crud_dish
+from app.crud.dependencies import get_current_user
 from app.db.database import get_db
 from app.schemas import DishBase, DishIn
 
@@ -22,7 +23,12 @@ async def get_dish(dish_id: int, db: Session = Depends(get_db)):
     return db_dish
 
 
-@router.post("/", response_model=DishBase, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/",
+    response_model=DishBase,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(get_current_user)],
+)
 async def create_dish(dish: DishIn, db: Session = Depends(get_db)):
     """Create a new dish."""
     return crud_dish.create_dish(db=db, dish=dish)
