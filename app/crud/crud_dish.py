@@ -30,3 +30,11 @@ def create_dish(db: Session, dish: DishIn):
     db.commit()
     db.refresh(new_dish)
     return new_dish
+
+
+def delete_dish(db: Session, dish_id: int):
+    """Delete a dish by id."""
+    db_dish = db.query(Dish).filter(Dish.id == dish_id).first()
+    db.delete(db_dish)
+    db.commit()
+    return db_dish

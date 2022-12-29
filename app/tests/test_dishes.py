@@ -41,3 +41,19 @@ class TestDish:
         response = test_client.get("/dishes")
         assert response.status_code == 200
         assert len(response.json()) == 2
+
+    def test_delete_dish(self, test_client, access_token):
+        """Test get a dish by id, 404, 401"""
+        test_client.headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {access_token}",
+        }
+        response = test_client.delete("/dishes/1")
+        assert response.status_code == 200
+
+        response = test_client.delete("/dishes/100")
+        assert response.status_code == 404
+
+        test_client.headers.clear()
+        response = test_client.delete("/dishes/2")
+        assert response.status_code == 401

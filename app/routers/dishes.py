@@ -43,3 +43,19 @@ async def get_all_dishes(
     if len(dishes) == 0:
         raise HTTPException(status_code=404, detail="Dishes not found")
     return dishes
+
+
+@router.delete(
+    "/{dish_id}",
+    status_code=status.HTTP_200_OK,
+    dependencies=[Depends(get_current_user)],
+)
+async def delete_dish(dish_id: int, db: Session = Depends(get_db)):
+    """Delete a dish by id."""
+    db_dish = crud_dish.get_dish(db, dish_id=dish_id)
+    if not db_dish:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Dish with id {dish_id} not found",
+        )
+    return crud_dish.delete_dish(db=db, dish_id=dish_id)
