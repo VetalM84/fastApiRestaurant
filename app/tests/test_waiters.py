@@ -26,6 +26,11 @@ class TestWaiter:
         response = test_client.get("/waiters/1")
         assert response.status_code == 200
 
+    def test_get_waiter_401(self, test_client):
+        """Test Get a waiter by id with no credentials."""
+        response = test_client.get("/waiters/1")
+        assert response.status_code == 401
+
     def test_get_all_waiters(self, test_client):
         """Test get all waiters."""
         response = test_client.get("/waiters")
